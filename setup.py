@@ -26,7 +26,7 @@ run_requirements = [
     'gunicorn==20.0.4',
     'requests==2.22.0',
     'loguru==0.4.1',
-    'vaderSentiment'
+    'SymPy'
 ]
 
 with io.open('./service/__init__.py', encoding='utf8') as version_f:

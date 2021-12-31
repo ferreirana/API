@@ -4,7 +4,7 @@ from loguru import logger
 import sympy as sy
 from sympy.interactive import init_printing
 from service.constants import mensagens
-import pandas as pd
+##import pandas as pd
 import numpy as np
 
 
@@ -26,11 +26,12 @@ class CalculoService():
         start_time = time.time()
 
         response_predicts = self.calculo(value['a'], value['b'], value['c'])
-        response_calc = self.integral(value['a'], value['b'], value['c'])
+        response_calc = self.derivada(value['a'], value['b'], value['c'])
 
         response = {
                       "Raizes": response_predicts,
-                      "Integral": response_calc}
+                      "Derivada": response_calc
+                      }
         
         logger.debug(mensagens.FIM_PREDICT)
         logger.debug(f"Fim de todas os calculos em {time.time()-start_time}")
@@ -52,16 +53,18 @@ class CalculoService():
             x2 = (-b[0]-np.sqrt(delta))/2*a[0]    
             return round(x1, 0), round(x2, 0)
 
-    def integral(self, a, b, c):
+    def derivada(self, a, b, c):
 
         logger.debug('Iniciando a integral...')
         init_printing(pretty_print=True)
 
         x, y, z = sy.symbols('x y z')
 
-        func = x**a[0] * y**b[0] * z**c[0]
+        func = x**a[0] + y**b[0] + z**c[0]
 
-        result = sy.diff(func, x)
+        result = str(sy.diff(func, x) + sy.diff(func, y) + sy.diff(func, z))
+
+        logger.debug(result)
 
         return result
 
